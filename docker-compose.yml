@@ -1,0 +1,30 @@
+version: "3.5"
+networks:
+  dncore_network:
+    name: dncore_network
+    external: true
+services:
+  wifi.dnp.erium.eth:
+    build: ./src
+    image: "wifi.dnp.erium.eth:0.2.8"
+    container_name: eriumCore-wifi.dnp.erium.eth
+    environment:
+      - SSID=eriumWIFI
+      - WPA_PASSPHRASE=tamtum88
+      - NAT=true
+      - CHANNEL=11
+      - MODE=admin
+      - INTERFACE
+      - ADVANCED_OPTIONS=no
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    dns: 172.33.1.2
+    privileged: true
+    restart: unless-stopped
+    networks:
+      dncore_network:
+        ipv4_address: 172.33.1.10
+        aliases:
+          - wifi.erium
+    logging:
+      driver: journald
